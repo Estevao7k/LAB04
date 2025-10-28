@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Filmes</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Início</a></li>
+            <li><a href="cadastro_filmes.html">Cadastro de Filmes</a></li>
+            <li><a href="cadastro_salas.html">Cadastro de Salas</a></li>
+            <li><a href="cadastro_sessoes.html">Cadastro de Sessões</a></li>
+            <li><a href="venda_ingressos.html">Venda de Ingressos</a></li>
+            <li><a href="sessoes.html">Sessões Disponíveis</a></li>
+        </ul>
+    </nav>
+    <hr>
+    <h1>Cadastro de Filmes</h1>
+    <form id="form_cadastro_filme">
+        <div>
+            <label for="titulo">Título:</label>
+            <input type="text" id="titulo" required>
+        </div>
+        <div>
+            <label for="genero">Gênero:</label>
+            <input type="text" id="genero" required>
+        </div>
+        <div>
+            <label for="descricao">Descrição:</label>
+            <textarea id="descricao"></textarea>
+        </div>
+        <div>
+            <label for="classificacao_indicativa">Classificação Indicativa:</label>
+            <select id="classificacao_indicativa">
+                <option value="L">Livre (L)</option>
+                <option value="10">10 anos</option>
+                <option value="12">12 anos</option>
+                <option value="14">14 anos</option>
+                <option value="16">16 anos</option>
+                <option value="18">18 anos</option>
+            </select>
+        </div>
+        <div>
+            <label for="duracao">Duração (minutos):</label>
+            <input type="number" id="duracao" required>
+        </div>
+        <div>
+            <label for="data_estreia">Data de Estreia:</label>
+            <input type="date" id="data_estreia">
+        </div>
+        <button type="submit">Salvar Filme</button>
+    </form>
+
+    <script>
+        document.getElementById('form_cadastro_filme').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const filme = {
+                id: Date.now(),
+                titulo: document.getElementById('titulo').value,
+                genero: document.getElementById('genero').value,
+                descricao: document.getElementById('descricao').value,
+                classificacao_indicativa: document.getElementById('classificacao_indicativa').value,
+                duracao: document.getElementById('duracao').value,
+                data_estreia: document.getElementById('data_estreia').value
+            };
+
+            const filmes = JSON.parse(localStorage.getItem('filmes')) || [];
+            filmes.push(filme);
+            localStorage.setItem('filmes', JSON.stringify(filmes));
+
+            alert('Filme salvo com sucesso!');
+            document.getElementById('form_cadastro_filme').reset();
+        });
+    </script>
+</body>
+</html>

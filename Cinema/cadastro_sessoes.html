@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Sessões</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><a href="index.html">Início</a></li>
+            <li><a href="cadastro_filmes.html">Cadastro de Filmes</a></li>
+            <li><a href="cadastro_salas.html">Cadastro de Salas</a></li>
+            <li><a href="cadastro_sessoes.html">Cadastro de Sessões</a></li>
+            <li><a href="venda_ingressos.html">Venda de Ingressos</a></li>
+            <li><a href="sessoes.html">Sessões Disponíveis</a></li>
+        </ul>
+    </nav>
+    <hr>
+    <h1>Cadastro de Sessões</h1>
+    <form id="form_cadastro_sessao">
+        <div>
+            <label for="filme">Filme:</label>
+            <select id="filme" required></select>
+        </div>
+        <div>
+            <label for="sala">Sala:</label>
+            <select id="sala" required></select>
+        </div>
+        <div>
+            <label for="data_hora">Data e Hora:</label>
+            <input type="datetime-local" id="data_hora" required>
+        </div>
+        <div>
+            <label for="preco">Preço:</label>
+            <input type="number" id="preco" step="0.01" required>
+        </div>
+        <div>
+            <label for="idioma">Idioma:</label>
+            <select id="idioma">
+                <option value="Dublado">Dublado</option>
+                <option value="Legendado">Legendado</option>
+            </select>
+        </div>
+        <div>
+            <label for="formato">Formato:</label>
+            <select id="formato">
+                <option value="2D">2D</option>
+                <option value="3D">3D</option>
+            </select>
+        </div>
+        <button type="submit">Salvar Sessão</button>
+    </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const select_filme = document.getElementById('filme');
+            const filmes = JSON.parse(localStorage.getItem('filmes')) || [];
+            if (filmes.length === 0) {
+                select_filme.innerHTML = '<option value="">Cadastre um filme primeiro</option>';
+            }
+            filmes.forEach(function(filme) {
+                const option = document.createElement('option');
+                option.value = filme.id;
+                option.textContent = filme.titulo;
+                select_filme.appendChild(option);
+            });
+
+            const select_sala = document.getElementById('sala');
+            const salas = JSON.parse(localStorage.getItem('salas')) || [];
+            if (salas.length === 0) {
+                select_sala.innerHTML = '<option value="">Cadastre uma sala primeiro</option>';
+            }
+            salas.forEach(function(sala) {
+                const option = document.createElement('option');
+                option.value = sala.id;
+                option.textContent = sala.nome_sala;
+                select_sala.appendChild(option);
+            });
+        });
+
+        document.getElementById('form_cadastro_sessao').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const sessao = {
+                id: Date.now(),
+                filme_id: document.getElementById('filme').value,
+                sala_id: document.getElementById('sala').value,
+                data_hora: document.getElementById('data_hora').value,
+                preco: document.getElementById('preco').value,
+                idioma: document.getElementById('idioma').value,
+                formato: document.getElementById('formato').value
+            };
+
+            const sessoes = JSON.parse(localStorage.getItem('sessoes')) || [];
+            sessoes.push(sessao);
+            localStorage.setItem('sessoes', JSON.stringify(sessoes));
+
+            alert('Sessão salva com sucesso!');
+            document.getElementById('form_cadastro_sessao').reset();
+        });
+    </script>
+</body>
+</html>
